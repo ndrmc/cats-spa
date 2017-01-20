@@ -62,3 +62,8 @@ bower_components
 
 ###  VS Code files ###
 .vscode
+
+
+### Intellij ###
+
+.idea/
