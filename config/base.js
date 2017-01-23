@@ -1,3 +1,4 @@
 module.exports = { 
-    'get_receipts_uri': 'http://localhost:8080/receipts'
+    'cats_v1_base_uri': 'http://10.11.156.20:9020/CatsAPI/',
+    'cats_v2_base_uri': 'http://localhost:8080/'
 }; 
