@@ -29,38 +29,52 @@
           </div>
           <div class="x_content">
                
-            <form data-parsley-validate class="form-horizontal form-label-left">
+            <form class="form-horizontal form-label-left">
 
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="grn">GRN <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="grn" name="grn" required="required" class="form-control col-md-7 col-xs-12">
+                        <input type="text" id="grn" name="grnNo" required="required" autofocus class="form-control col-md-7 col-xs-12 receipt-field">
                     </div>
                 </div>
 
+
                 <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="received-date">Store <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select name="storeId" id="store" class="form-control receipt-field" required>
+                            <option value="">-- Choose --</option>
+                            {{#each stores as |store| }}
+                                <option value="{{store.StoreID}}">{{store.Name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+
+                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="received-date">Received Date <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" id="received-date" name="received-date" required="required" class="form-control col-md-7 col-xs-12">
+                        <input type="text" id="received-date" name="receivedDate" required="required" class="date-picker form-control col-md-7 col-xs-12 receipt-field">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="received-by" class="control-label col-md-3 col-sm-3 col-xs-12">Received By</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="received-by" class="form-control col-md-7 col-xs-12" type="text" name="received-by">
+                        <input id="received-by" class="form-control col-md-7 col-xs-12 receipt-field" type="text" name="storekeeperName">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="waybill" class="control-label col-md-3 col-sm-3 col-xs-12">Waybill(s)</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="waybill" class="form-control col-md-7 col-xs-12" type="text" name="waybill">
+                        <input id="waybill" class="form-control col-md-7 col-xs-12 receipt-field" type="text" name="waybillNo">
                     </div>
                 </div>
-
+            </form>
 
                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                     <ul class="nav nav-tabs bar_tabs" role="tablist">
@@ -77,19 +91,141 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher
-                            synth. Cosby sweater eu banh mi, qui irure terr.</p>
+                            <form action="/" id="receiptLineForm">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Commodity Category</th>
+                                        <th>Commodity</th>
+                                        <th>Amount</th>
+                                        <th>Project</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="receiptLinesTableBody">
+                                    <tr>
+                                        
+                                        <td>
+                                            <select name="commodityCategory" id="commodityCategory" class="form-control" required>
+                                                <option value="">-- Choose --</option>
+                                                {{#each commodityCategories as |category| }}
+                                                    <option value="{{category.Id}}">{{category.Name}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="commodity" id="commodity" class="form-control">
+                                                <option value="">-- Choose --</option>
+                                                {{#each commodities as |commodity| }}
+                                                    <option value="{{commodity.CommodityID}}">{{commodity.Name}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control" id="commodity-amount" />
+                                        </td>
+                                        <td>
+                                            <select name="project" id="project" class="form-control">
+                                                <option value="">-- Choose --</option>
+                                                {{#each projects as |project| }}
+                                                    <option value="{{project.ProjectCodeID}}">{{project.Value}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </td>
+                                        
+                                        
+                                        <td>
+                                            <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </form>
                         </div>
                         
                         <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                            <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo
-                            booth letterpress, commodo enim craft beer mlkshk aliquip</p>
-                        </div>                    
+                            <div class="form-group col-md-6">
+                                <label  for="weightBridgeTicket">Weight Bridge Ticket #
+                                </label>
+                                <div>
+                                    <input type="text" id="weightBridgeTicket" name="weightBridgeTicketNo" required="required" class="form-control receipt-field">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label  for="transporter">Transporter <span class="required">*</span>
+                                </label>
+                                <div>
+                                    <select name="transporterId" id="transporter" class="form-control receipt-field">
+                                        <option value="">-- Choose --</option>
+                                        {{#each trans as |project| }}
+                                            <option value="{{project.ProjectCodeID}}">{{project.Value}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label  for="weightBeforeUnloading">Weight Before Unloading
+                                </label>
+                                <div>
+                                    <input type="text" id="weightBeforeUnloading" name="weightBeforeUnloading" required="required" class="form-control receipt-field">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label  for="plateNumber">Plate #
+                                </label>
+                                <div>
+                                    <input type="text" id="plateNumber" name="plateNo" required="required" class="form-control receipt-field">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label  for="weightAfterUnloading">Weight Before Unloading
+                                </label>
+                                <div>
+                                    <input type="text" id="weightAfterUnloading" name="weightAfterUnloading" required="required" class="form-control receipt-field">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label  for="trailerPlateNumber">Trailer Plate #
+                                </label>
+                                <div>
+                                    <input type="text" id="trailerPlateNumber" name="trailerPlateNo" required="required" class="form-control receipt-field">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label  for="driversName">Driver's Name
+                                </label>
+                                <div>
+                                    <input type="text" id="driversName" name="driversName" required="required" class="form-control receipt-field">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label  for="remark">Remark
+                                </label>
+                                <div>
+                                    <textarea type="text" id="remark" name="remark" required="required" class="form-control receipt-field"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ln_solid"></div>
+
+                        <div class="form-group">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-primary save-grn">Save as draft</button>
+                                <button type="submit" class="btn btn-success save-grn" data-post="true">Save and Post</button>
+                                <button type="submit" class="btn btn-default">Cancel</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
-
-
 
             </form>
 
@@ -101,3 +237,113 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+
+    var receiptLineRowTemplate = '<tr id="$uid">' + 
+                                    '<td>$commCat</td>' + 
+                                    '<td>$comm</td>' +
+                                    '<td>$amount</td>' +
+                                    '<td>$proj</td>' +
+                                    '<td><i style="cursor:pointer;" class="remove-receipt-line fa fa-times" data-line-uid="$uid" ></i></td>' +
+                                 '</tr>'; 
+
+    var receiptLines = [];
+
+    $(
+        function() { 
+
+            $('.save-grn').click( function(e) { 
+                e.preventDefault(); 
+
+                var receiptDoc = {}; 
+
+                $('.receipt-field').each( function() { 
+                    $this = $(this);
+
+                    receiptDoc[$this.attr('name')] = $this.val(); 
+                }); 
+
+                receiptDoc.receiptLines = receiptLines; 
+
+
+                receiptDoc['draft'] = !$(this).data('post'); 
+
+
+                console.log("receiptDoc", receiptDoc); 
+
+                $.ajax( {
+                    type: "POST",
+                    url: '/receipts',
+                    data: receiptDoc,
+                    dataType: 'json'
+                }).done(function( data ) { 
+                    if( data.errorMessage ) { 
+                        $.jGrowl(data.errorMessage); 
+                    }
+                    else { 
+                        $.jGrowl( "Saved!");
+
+                        window.location.href = '/receipts'; 
+                    
+                    }
+                }); 
+                
+
+            }); 
+
+            $('#receiptLinesTableBody').on( 'click', '.remove-receipt-line', function() { 
+                var uid = $(this).data('line-uid'); 
+
+                $("#" + uid).fadeOut(); 
+
+                receiptLines = $.grep( receiptLines, function(item) { 
+                    return item.uid !== uid;
+                }); 
+            }); 
+
+            $('#add-receipt-line').click( function() { 
+
+                if( !$("#receiptLineForm").parsley().validate() ) { 
+                    return; 
+                }
+                var commodityCategoryId = $('#commodityCategory').val();  
+
+                var commCategoryName = $('#commodityCategory option:selected').text(); 
+
+                var commodityId = $("#commodity").val();
+
+                var commodityName = $("#commodity option:selected").text(); 
+
+                var amount = $("#commodity-amount").val(); 
+
+                var projectId = $("#project").val(); 
+
+                var projectName = $("#project option:selected").text(); 
+
+                var uid = Date.now(); 
+
+                receiptLines.push( {
+                    uid: uid, 
+                    commodityCategoryId: commodityCategoryId, 
+                    commodityId: commodityId,
+                    amount: amount, 
+                    projectId: projectId
+                });
+
+                $('#receiptLinesTableBody').prepend( 
+                    receiptLineRowTemplate.replace("$commCat", commCategoryName)
+                                          .replace("$comm", commodityName)
+                                          .replace("$amount", amount)
+                                          .replace("$proj", projectName)
+                                          .replace(/\$uid/g, uid)
+                ); 
+
+
+                $("#receiptLineForm select, #receiptLineForm input").val('');
+
+            });
+
+        }
+    ); 
+</script>

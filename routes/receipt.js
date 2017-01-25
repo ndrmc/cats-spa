@@ -1,6 +1,7 @@
 var express = require('express');
 var config = require('./../config');
 var receiptService = require('../services/receiptService');
+var lookupsService = require('../services/lookupsService');
 
 var router = express.Router();
 
@@ -9,7 +10,7 @@ router.get('/', function(req, res, next) {
 
   receiptService.getAllReceipts()
   .then( function(response) { 
-    res.render('receipt/index', {title: 'GRN listing', receipts: response.data });
+    res.render('receipt/index', { receipts: response.data});
   })
   .catch( function( error) { 
     next(error.toString());
@@ -19,7 +20,37 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/new', function(req, res, next) {
-  res.render('receipt/new');
+
+  Promise.all([
+    lookupsService.getAllCommodityCategories(), 
+    lookupsService.getAllCommodities(), 
+    lookupsService.getAllProjects(),
+    lookupsService.getAllStores()
+  ]).then( function( results ) { 
+    res.render( 'receipt/new', 
+    { 
+      commodityCategories: results[0].data, 
+      commodities: results[1].data, 
+      projects: results[2].data,
+      stores: results[3].data
+   } );
+  })
+  .catch( function( error) { 
+    next(error.toString());
+  });
+  ; 
 });
+
+router.post( '/', function(req, res, next) {
+
+  receiptService.saveReceipt(JSON.stringify(req.body))
+  .then( function(response) { 
+    res.json({ id: response.data.id });
+  })
+  .catch( function( error) { 
+    res.json({errorMessage: "Save failed. Please try again shortly!"});
+  });
+ 
+}); 
 
 module.exports = router;
