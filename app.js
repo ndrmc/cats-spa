@@ -5,7 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
-
+var equalsHelper = require('handlebars-helper-equal');
+var moment = require('moment');
 
 /* Routes */
 var index = require('./routes/index');
@@ -14,6 +15,38 @@ var receipt = require('./routes/receipt.js');
 var operation = require('./routes/operation.js');
 
 var app = express();
+var DateFormats = {
+       short: "DD MMMM,  YYYY",
+       long: "dddd DD MMMM, YYYY HH:mm"
+};
+var hbs = exphbs.create({
+    // Specify helpers which are only registered on this instance.
+    helpers: {
+        equal: equalsHelper
+       
+    }
+});
+var hbs = require('handlebars');
+hbs.registerHelper("equal", equalsHelper);
+hbs.registerHelper("formatDate", function (date, format) {
+    if (moment) {
+        // can use other formats like 'lll' too
+        format = DateFormats[format] || format;
+        return moment(date).format(format);
+    } else {
+        return date;
+    }
+});
+
+hbs.registerHelper("isPresent", function (val, a) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === val) {
+            return true;
+        }
+    }
+    return false;
+})
+
 
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +65,8 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/receipts', receipt);
 app.use('/operations', operation);
+
+app.use('/vendors', express.static(__dirname + '/public/vendors/'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
