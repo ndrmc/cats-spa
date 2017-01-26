@@ -32,7 +32,8 @@ router.get('/new', function(req, res, next) {
       commodityCategories: results[0].data, 
       commodities: results[1].data, 
       projects: results[2].data,
-      stores: results[3].data
+      stores: results[3].data, 
+      title: "New GRN"
    } );
   })
   .catch( function( error) { 

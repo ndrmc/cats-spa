@@ -29,7 +29,7 @@
           </div>
           <div class="x_content">
                
-            <form class="form-horizontal form-label-left">
+            <form id="receiptForm" class="form-horizontal form-label-left">
 
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="grn">GRN <span class="required">*</span>
@@ -84,7 +84,7 @@
                             </a>
                         </li>
                         <li role="presentation" class="">
-                            <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">
+                            <a href="#transporter_info_tab" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">
                                 Transporter
                             </a>
                         </li>
@@ -143,76 +143,78 @@
                             </form>
                         </div>
                         
-                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                            <div class="form-group col-md-6">
-                                <label  for="weightBridgeTicket">Weight Bridge Ticket #
-                                </label>
-                                <div>
-                                    <input type="text" id="weightBridgeTicket" name="weightBridgeTicketNo" required="required" class="form-control receipt-field">
+                        <div role="tabpanel" class="tab-pane fade" id="transporter_info_tab" aria-labelledby="profile-tab">
+                            <form id="transporter_info_form">
+                                <div class="form-group col-md-6">
+                                    <label  for="weightBridgeTicket">Weight Bridge Ticket #
+                                    </label>
+                                    <div>
+                                        <input type="text" id="weightBridgeTicket" name="weightBridgeTicketNo" required="required" class="form-control receipt-field">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label  for="transporter">Transporter <span class="required">*</span>
-                                </label>
-                                <div>
-                                    <select name="transporterId" id="transporter" class="form-control receipt-field">
-                                        <option value="">-- Choose --</option>
-                                        {{#each trans as |project| }}
-                                            <option value="{{project.ProjectCodeID}}">{{project.Value}}</option>
-                                        {{/each}}
-                                    </select>
+                                <div class="form-group col-md-6">
+                                    <label  for="transporter">Transporter <span class="required">*</span>
+                                    </label>
+                                    <div>
+                                        <select name="transporterId" id="transporter" required class="form-control receipt-field">
+                                            <option value="">-- Choose --</option>
+                                            {{#each trans as |project| }}
+                                                <option value="{{project.ProjectCodeID}}">{{project.Value}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group col-md-6">
-                                <label  for="weightBeforeUnloading">Weight Before Unloading
-                                </label>
-                                <div>
-                                    <input type="text" id="weightBeforeUnloading" name="weightBeforeUnloading" required="required" class="form-control receipt-field">
+                                <div class="form-group col-md-6">
+                                    <label  for="weightBeforeUnloading">Weight Before Unloading
+                                    </label>
+                                    <div>
+                                        <input type="text" id="weightBeforeUnloading" name="weightBeforeUnloading"  class="form-control receipt-field">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label  for="plateNumber">Plate #
-                                </label>
-                                <div>
-                                    <input type="text" id="plateNumber" name="plateNo" required="required" class="form-control receipt-field">
+                                <div class="form-group col-md-6">
+                                    <label  for="plateNumber">Plate # <span class="required">*</span>
+                                    </label>
+                                    <div>
+                                        <input type="text" id="plateNumber" name="plateNo" required="required" class="form-control receipt-field">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group col-md-6">
-                                <label  for="weightAfterUnloading">Weight Before Unloading
-                                </label>
-                                <div>
-                                    <input type="text" id="weightAfterUnloading" name="weightAfterUnloading" required="required" class="form-control receipt-field">
+                                <div class="form-group col-md-6">
+                                    <label  for="weightAfterUnloading">Weight Before Unloading
+                                    </label>
+                                    <div>
+                                        <input type="text" id="weightAfterUnloading" name="weightAfterUnloading" class="form-control receipt-field">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label  for="trailerPlateNumber">Trailer Plate #
-                                </label>
-                                <div>
-                                    <input type="text" id="trailerPlateNumber" name="trailerPlateNo" required="required" class="form-control receipt-field">
+                                <div class="form-group col-md-6">
+                                    <label  for="trailerPlateNumber">Trailer Plate #
+                                    </label>
+                                    <div>
+                                        <input type="text" id="trailerPlateNumber" name="trailerPlateNo" class="form-control receipt-field">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group col-md-6">
-                                
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label  for="driversName">Driver's Name
-                                </label>
-                                <div>
-                                    <input type="text" id="driversName" name="driversName" required="required" class="form-control receipt-field">
+                                <div class="form-group col-md-6">
+                                    
                                 </div>
-                            </div>
+                                <div class="form-group col-md-6">
+                                    <label  for="driversName">Driver's Name
+                                    </label>
+                                    <div>
+                                        <input type="text" id="driversName" name="driversName" class="form-control receipt-field">
+                                    </div>
+                                </div>
 
-                            <div class="form-group col-md-12">
-                                <label  for="remark">Remark
-                                </label>
-                                <div>
-                                    <textarea type="text" id="remark" name="remark" required="required" class="form-control receipt-field"></textarea>
+                                <div class="form-group col-md-12">
+                                    <label  for="remark">Remark
+                                    </label>
+                                    <div>
+                                        <textarea type="text" id="remark" name="remark" class="form-control receipt-field"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
 
                         <div class="ln_solid"></div>
 
@@ -256,6 +258,23 @@
             $('.save-grn').click( function(e) { 
                 e.preventDefault(); 
 
+                var isDraft = !$(this).data('post'); 
+
+                if( !isDraft ) { 
+                    var valid = $("#receiptForm").parsley().validate(); 
+                    valid = $("#transporter_info_form").parsley().validate() && valid ; //To avoid && from short circuiting
+
+                    if( !valid ) { 
+                        $.jGrowl("All fields should have valid values to post."); 
+                        return; 
+                    }
+
+                    if( receiptLines.size() === 0 ) { 
+                        $.jGrowl("You should have atleat one commodity in the receipt."); 
+                        return; 
+                    }
+                }
+
                 var receiptDoc = {}; 
 
                 $('.receipt-field').each( function() { 
@@ -267,7 +286,7 @@
                 receiptDoc.receiptLines = receiptLines; 
 
 
-                receiptDoc['draft'] = !$(this).data('post'); 
+                receiptDoc['draft'] = isDraft; 
 
 
                 console.log("receiptDoc", receiptDoc); 
