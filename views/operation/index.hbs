@@ -11,7 +11,7 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Operation</h2>
-                        <a href="operations/new" class="btn btn-primary pull-right">Add New</a>
+                        <a href="/operations/new" class="btn btn-primary pull-right">Add New</a>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -37,7 +37,12 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
-                                                    <div class="row"> <button type="button" class="btn btn-dark btn-xs">{{this.status}}</button> </div>
+                                                    <div class="row"> <button type="button" 
+                                                      {{#equal this.status "ongoing" }}
+                                                      class="btn btn-warning btn-xs"
+                                                      {{else}}
+                                                      class="btn btn-dark btn-xs"
+                                                      {{/equal}}>{{this.status}}</button> </div>
                                                     <div class="row"> <span>Relief</span> </div>
                                                     <div class="row"> <a>Analytics & Reports </a> </div>
                                                 </div>
