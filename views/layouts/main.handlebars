@@ -38,6 +38,12 @@
     
     <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
+    {{!--DataTables--}}
+    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+
+    <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css">
+
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.2.12/jquery.jgrowl.min.css" />
 	  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.2.12/jquery.jgrowl.min.js"></script>
@@ -157,6 +163,8 @@
             format: 'YYYY-MM-DD'
           },
         });
+
+        $( '.basic-datatable').DataTable(); 
       }); 
     </script>
   </body>

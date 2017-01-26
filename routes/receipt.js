@@ -10,7 +10,10 @@ router.get('/', function(req, res, next) {
 
   receiptService.getAllReceipts()
   .then( function(response) { 
-    res.render('receipt/index', { receipts: response.data});
+    res.render('receipt/index', { 
+      receipts: response.data
+    
+  });
   })
   .catch( function( error) { 
     next(error.toString());
