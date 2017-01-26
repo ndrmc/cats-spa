@@ -2,18 +2,63 @@ var express = require('express');
 var config = require('./../config');
 var receiptService = require('../services/receiptService');
 var lookupsService = require('../services/lookupsService');
+var utils = require('../services/utils'); 
 
 var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
 
+  var storeNames = {};
+
   receiptService.getAllReceipts()
   .then( function(response) { 
-    res.render('receipt/index', { 
-      receipts: response.data
+
+    var receipts = response.data; 
+
+    var storePromises = []; 
+
+    for( var i = 0; i < receipts.length; i++ ) { 
+      var receipt = receipts[i];
+
+      if( receipt.warehouseId === null ) continue; 
+
+      if( typeof storeNames[receipt.warehouseId] === 'undefined') { 
+        storeNames[receipt.warehouseId] = ''; 
+
+        storePromises.push( lookupsService.getStoreById( receipt.warehouseId) ); 
+      }
+    }
+
+
+    Promise.all( storePromises)
+    .then( function(stores) { 
+      for( var j = 0; j < stores.length; j++ ) { 
+        storeNames[stores[j].data.StoreID] = stores[j].data.Name; 
+      }
+
+      for( var i = 0; i < receipts.length; i++ ) { 
+
+        //populate storeName
+        receipts[i].storeName = storeNames[receipts[i].warehouseId];
+
+        //format receivedDate 
+        var receivedDate; 
+
+        if( receipts[i].receivedDate ) { 
+          receivedDate = new Date(receipts[i].receivedDate); 
+
+          receipts[i].receivedDate = utils.formatDate(receivedDate);
+        }
+      }
+
+      res.render('receipt/index', { receipts: receipts });
+    })
+    .catch( function( error) { 
+      next(error.toString());
+    })
+
     
-  });
   })
   .catch( function( error) { 
     next(error.toString());
@@ -28,7 +73,8 @@ router.get('/new', function(req, res, next) {
     lookupsService.getAllCommodityCategories(), 
     lookupsService.getAllCommodities(), 
     lookupsService.getAllProjects(),
-    lookupsService.getAllStores()
+    lookupsService.getAllStores(), 
+    lookupsService.getAllTransporters()
   ]).then( function( results ) { 
     res.render( 'receipt/new', 
     { 
@@ -36,6 +82,7 @@ router.get('/new', function(req, res, next) {
       commodities: results[1].data, 
       projects: results[2].data,
       stores: results[3].data, 
+      transporters: results[4].data,
       title: "New GRN"
    } );
   })

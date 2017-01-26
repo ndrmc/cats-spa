@@ -15,5 +15,11 @@ module.exports = {
     }, 
     getAllStores() {
         return axios.get( catsV1BaseUri + "Store/Get" );
+    }, 
+    getAllTransporters() {
+        return axios.get( catsV1BaseUri + "Transporter/Get" );
+    }, 
+    getStoreById( storeId ) { 
+        return axios.get( catsV1BaseUri + "Store/Get/" + storeId); 
     }
 }

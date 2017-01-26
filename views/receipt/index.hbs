@@ -39,7 +39,7 @@
                     <tr>
                       <td>{{this.grnNo}}</td>
                       <td>{{this.receivedDate}}</td>
-                      <td>{{this.warehouseId}}</td>
+                      <td>{{this.storeName}}</td>
                       <td>{{this.storekeeperName}}</td>
                       <td>
                         {{#if this.draft}}
@@ -50,7 +50,7 @@
                       </td>
                       <td>
                         {{#if this.draft}}
-                          <a href="#">Open</a> | <a href="#">Post</a> | <a href="#">Delete</a>
+                          <a href="#">Open</a> &middot; <a href="#">Post</a> &middot; <a href="#">Delete</a>
                         {{ else }}
                           <a href="#">Open</a>
                         {{/if}}
