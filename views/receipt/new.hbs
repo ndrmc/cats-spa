@@ -44,7 +44,7 @@
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="received-date">Store <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select name="storeId" id="store" class="form-control receipt-field" required>
+                        <select name="warehouseId" id="store" class="form-control receipt-field" required>
                             <option value="">-- Choose --</option>
                             {{#each stores as |store| }}
                                 <option value="{{store.StoreID}}">{{store.Name}}</option>
@@ -114,7 +114,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="commodity" id="commodity" class="form-control">
+                                            <select name="commodity" id="commodity" class="form-control" required>
                                                 <option value="">-- Choose --</option>
                                                 {{#each commodities as |commodity| }}
                                                     <option value="{{commodity.CommodityID}}">{{commodity.Name}}</option>
@@ -122,10 +122,10 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" id="commodity-amount" />
+                                            <input type="number" class="form-control" id="commodity-amount" required/>
                                         </td>
                                         <td>
-                                            <select name="project" id="project" class="form-control">
+                                            <select name="project" id="project" class="form-control" required>
                                                 <option value="">-- Choose --</option>
                                                 {{#each projects as |project| }}
                                                     <option value="{{project.ProjectCodeID}}">{{project.Value}}</option>
@@ -146,7 +146,7 @@
                         <div role="tabpanel" class="tab-pane fade" id="transporter_info_tab" aria-labelledby="profile-tab">
                             <form id="transporter_info_form">
                                 <div class="form-group col-md-6">
-                                    <label  for="weightBridgeTicket">Weight Bridge Ticket #
+                                    <label  for="weightBridgeTicket">Weight Bridge Ticket # <span class="required">*</span>
                                     </label>
                                     <div>
                                         <input type="text" id="weightBridgeTicket" name="weightBridgeTicketNo" required="required" class="form-control receipt-field">
@@ -158,8 +158,8 @@
                                     <div>
                                         <select name="transporterId" id="transporter" required class="form-control receipt-field">
                                             <option value="">-- Choose --</option>
-                                            {{#each trans as |project| }}
-                                                <option value="{{project.ProjectCodeID}}">{{project.Value}}</option>
+                                            {{#each transporters as |transporter| }}
+                                                <option value="{{transporter.TransporterID}}">{{transporter.Name}}</option>
                                             {{/each}}
                                         </select>
                                     </div>
@@ -269,7 +269,7 @@
                         return; 
                     }
 
-                    if( receiptLines.size() === 0 ) { 
+                    if( receiptLines.length === 0 ) { 
                         $.jGrowl("You should have atleat one commodity in the receipt."); 
                         return; 
                     }
@@ -294,7 +294,7 @@
                 $.ajax( {
                     type: "POST",
                     url: '/receipts',
-                    data: receiptDoc,
+                    data: { receipt: JSON.stringify(receiptDoc)},
                     dataType: 'json'
                 }).done(function( data ) { 
                     if( data.errorMessage ) { 

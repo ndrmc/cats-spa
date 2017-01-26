@@ -94,7 +94,7 @@ router.get('/new', function(req, res, next) {
 
 router.post( '/', function(req, res, next) {
 
-  receiptService.saveReceipt(JSON.stringify(req.body))
+  receiptService.saveReceipt(req.body.receipt)
   .then( function(response) { 
     res.json({ id: response.data.id });
   })
