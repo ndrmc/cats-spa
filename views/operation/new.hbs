@@ -65,6 +65,18 @@
                         </div>
                       </div>
                       <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Operation month <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select  class="form-control col-md-7 col-xs-12" name="operationMonth" required="">
+                            <option value="">Choose..</option>
+                            {{#each months}}
+                            <option value={{this.id}}>{{this.name}}</option>
+                             {{/each}}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Program <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -92,7 +104,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Start</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           {{!--<input class="form-control col-md-7 col-xs-12" type="text" name="expectedStart">--}}
-                         <input  class="date-picker form-control col-md-7 col-xs-12" required="required" type="date" name="expectedStart" >
+                         <input  class="date-picker-1 form-control col-md-7 col-xs-12" required="required" type="date" name="expectedStart" >
                           {{!--<input type="hidden" id="my_hidden_input"> --}}   
 
                         </div>
@@ -101,7 +113,7 @@
                      <div class="form-group">                          
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">End</label>
                          <div class="col-md-6 col-sm-6 col-xs-12">
-                           <input  class="date-picker form-control col-md-7 col-xs-12" required="required" type="date" name="plannedEnd">
+                           <input  class="date-picker-1 form-control col-md-7 col-xs-12" required="required" type="date" name="plannedEnd">
                           {{!--<input type="hidden" id="my_hidden_input"> --}}   
 
                         </div>                      
@@ -127,8 +139,7 @@
 
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 col-xs-12 control-label">Regions                         
-                        </label>
-                        
+                        </label>                     
                         
                         <div class="col-md-9 col-sm-9 col-xs-12">
                            {{#each regions}}
@@ -167,6 +178,10 @@
     $("input:checkbox[name=region]:checked").each(function () {
         operationRegions.push($(this).val());
     });    
+
+</script>
+
+<script type="text/javascript">
 
 </script>
  

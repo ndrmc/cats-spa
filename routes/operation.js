@@ -2,6 +2,54 @@ var express = require('express');
 var router = express.Router();
 var operationService = require('./../services/operationService');
 
+var months = [{
+    id: 1,
+    name: "January"
+},{
+    id: 2,
+    name: "February"
+},
+{
+    id: 3,
+    name: "March"
+},
+{
+    id: 4,
+    name: "April"
+},
+{
+    id: 5,
+    name: "May"
+},
+{
+    id: 6,
+    name: "June"
+},
+{
+    id: 7,
+    name: "July"
+},
+{
+    id: 8,
+    name: "August"
+},
+{
+    id: 9,
+    name: "September"
+},
+{
+    id: 10,
+    name: "October"
+},
+{
+    id: 11,
+    name: "November"
+},
+{
+    id: 12,
+    name: "December"
+}
+];
 
 router.get('/', function (req, res, next) {
 
@@ -24,12 +72,13 @@ router.get('/new', function (req, res, next) {
             operationService.getAllRations(),
             operationService.getAllRegions()
         ])
-        .then(function (results) {
+        .then(function (results) {            
             res.render('operation/new', {
                 plans: results[0].data,
                 programs: results[1].data,
                 rations: results[2].data,
-                regions: results[3].data
+                regions: results[3].data,
+                months: months
             });
         })
         .catch(function (error) {
@@ -92,19 +141,24 @@ router.post('/new', function (req, res, next) {
 
     console.log(req.body);
 
-    Promise.all([
-            operationService.createOperation(req.body),
+    operationService.createOperation(req.body)
+        .then(function (response) {
             operationService.getAllOperations()
-        ])
-        .then(function (results) {
-            var operations = results[1].data;
-            res.render('operation/index', {
-                operations: operations
-            });
+                .then(function (result) {
+                    var operations = result.data;
+                    res.render('operation/index', {
+                        operations: operations
+                    });
+                })
+                .catch(function(error){
+                    console.log(error);
+                    next("Error fetching records. Reason: "+error.toString());
+                });
         })
         .catch(function (error) {
             next(error.toString());
         });
+
 });
 
 router.post('/:id', function (req, res, next) {
@@ -141,6 +195,46 @@ router.post('/:id', function (req, res, next) {
             });
     }
 
-})
+});
+
+router.get('/:id/details', function (req, res, next) {
+    var id = req.params.id;
+
+    operationService.getOperationById(id)
+    .then(function (response) {
+
+        var operation = response.data;
+        var operationRegions = [];
+
+        for (var i = 0; i < operation.operationRegions.length; i++) {
+            operationRegions.push(operation.operationRegions[i].regionId);
+        };
+        Promise.all([
+                operationService.getRequisitionsByOperation(operation),
+                operationService.getAllocationByOperation(id),
+                operationService.getDispatchesByOperation(id),
+                operationService.getDeliveriesByOperation(id)
+            ])
+            .then(function (results) {
+
+                res.render('operation/details', {
+                    operation: operation,
+                    operationRegions: operationRegions,
+                    // requisitions: results[0].data,
+                    // allocations: results[1].data,
+                    // dispatches: results[2].data,
+                    // deliveries: results[3].data,
+                });
+            })
+            .catch(function (error) {
+                next(error.toString());
+            });
+
+    }).catch(function (error) {
+
+    });
+});
+
+
 
 module.exports = router;

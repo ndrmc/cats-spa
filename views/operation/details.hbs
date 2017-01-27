@@ -1,0 +1,119 @@
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Operations page</h3>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <div class="row">
+              <div class="col-xs-8">
+                <h2>Operation Details</h2>
+              </div>
+              <div class="col-xs-4 ">
+                <div class="row">
+                  <div class="col-xs-4">
+                  </div>
+                  <div class="col-xs-4">
+                    <a href="/operations/{{operation.id}}" class="btn btn-primary">Edit</a>
+                  </div>
+                  <div class="btn-group col-xs-4">
+                    <button type="button" class="btn btn-danger">Tasks</button>
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                          <span class="caret"></span>
+                          <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Request</a>
+                      </li>
+                      <li class="divider"></li>
+                      <li><a href="#">Allocation</a>
+                      </li>
+                      <li><a href="#">Dispatch</a>
+                      </li>
+                      <li class="divider"></li>
+                      <li><a href="#">Close</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br>
+            <div class="panel">
+              <div class="row">
+                <label>{{operation.name}} </label> - <label>From {{formatDate operation.estimatedStart 'short'}} to {{formatDate operation.plannedEnd 'short'}}</label>
+              </div>
+              <div class="row">
+                <button type="button" {{#equal operation.status "ongoing" }} class="btn btn-warning btn-xs" {{else}} class="btn btn-dark btn-xs"
+                  {{/equal}}>{{operation.status}}
+                  </button>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="row">
+                   <label> Program: </label> <span> ## </span>
+                  </div>
+                  <div class="row">
+                    <label> Progress: </label> <span> ## </span>
+                  </div>
+                  <div class="row">
+                    <label>Year: </label> <span> {{operation.year}} </span>
+                  </div>
+                  <div class="row">
+                    <label> Round: </label> <span> {{operation.round}} </span>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="row"> <span>No of regions: </span>{{operationRegions.length}}</div>
+                  <div class="row"> <span>Total commodities: </span> </div>
+                  <div class="row"> <span>Total beneficiaries: </span> </div>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+              <div class="row">
+                <a href="#">Analytics & Reports</a>
+              </div>
+              <br>
+            </div>
+            <div class="panel">
+              <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab1" class="nav nav-tabs bar_tabs left" role="tablist">
+                  <li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Request</a>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Allocation</a>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb3" data-toggle="tab" aria-controls="profile" aria-expanded="false">Dispatch</a>
+                  </li>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content44" role="tab" id="profile-tabb4" data-toggle="tab" aria-controls="profile" aria-expanded="false">Delivery</a>
+                  </li>
+                </ul>
+                <div id="myTabContent2" class="tab-content">
+                  <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
+                    <p> Request </p>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+                    <p> Allocation </p>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
+                    <p> Dispatch </p>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content44" aria-labelledby="profile-tab">
+                    <p> Delivery</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

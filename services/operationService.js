@@ -29,5 +29,26 @@ module.exports = {
     },
     getAllRations: function(){
         return axios.get(catsV1BaseUri + "Ration/GetRations");
+    },
+    getRequisitionsByOperation: function (operation) {
+        var requestURL = "";
+
+        if (operation.programId == '1') /* relief */ {
+            requestURL = catsV1BaseUri + "ReliefRequisition/RequisitionNos?year=" + operation.year + "&program=1" + "&planId=" + operation.planId + "&round=" + operation.round+"&month=null";
+        } else if (operation.programId == '2') /* PSNP */ {
+            requestURL = catsV1BaseUri + "ReliefRequisition/RequisitionNos?year=" + operation.year + "&program=2" + "&planId=" + operation.planId + "&month=" + operation.operationMonth+"&round=null";
+        } else {
+            return null;
+        }
+        console.log('getRequisitionsByOperation: request url: ' + requestURL);
+        return axios.get(requestURL);
+    },
+    getAllocationByOperation: function(operationId){
+    },
+    getDispatchesByOperation: function(operationId){
+        return axios.get(catsV2BaseUri + "dispatch/operation/"+operationId);
+    },
+    getDeliveriesByOperation: function(operationId){
+
     }
 }

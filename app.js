@@ -19,13 +19,7 @@ var DateFormats = {
        short: "DD MMMM,  YYYY",
        long: "dddd DD MMMM, YYYY HH:mm"
 };
-var hbs = exphbs.create({
-    // Specify helpers which are only registered on this instance.
-    helpers: {
-        equal: equalsHelper
-       
-    }
-});
+
 var hbs = require('handlebars');
 hbs.registerHelper("equal", equalsHelper);
 hbs.registerHelper("formatDate", function (date, format) {
