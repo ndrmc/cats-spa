@@ -8,6 +8,10 @@ module.exports = {
         return axios.get( catsV2BaseUri + "receipts" );
     }, 
 
+    getReceiptById: function(id) { 
+        return axios.get( catsV2BaseUri + "receipts/" + id ); 
+    },
+
     saveReceipt: function( receiptObj ) { 
         return axios.post( 
             catsV2BaseUri + "receipts", 
@@ -18,5 +22,17 @@ module.exports = {
                 }
             }
        ); 
+    }, 
+
+    updateReceipt: function(id, receiptObj) { 
+        return axios.put( 
+                    catsV2BaseUri + "receipts/" + id, 
+                    receiptObj, 
+                    {
+                        headers: { 
+                            "Content-Type": "application/json"
+                        }
+                    }
+            );
     }
 }

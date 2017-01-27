@@ -17,6 +17,8 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.14.2",
     "font-awesome": "^4.7.0",
+    "handlebars": "^4.0.6",
+    "handlebars-helper-equal": "^1.0.0",
     "hbs": "~4.0.1",
     "jquery": "^3.1.1",
     "lodash": "^4.17.4",

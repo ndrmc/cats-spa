@@ -8,6 +8,7 @@ var exphbs = require('express-handlebars');
 var session = require('express-session');
 var flash = require('connect-flash');
 var flashToLocals = require('./middlewares/flash-to-locals-setter');
+var equalsHelper = require('handlebars-helper-equal'); 
 
 
 /* Routes */
@@ -19,8 +20,18 @@ var app = express();
 
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
-app.engine('hbs', exphbs({defaultLayout: 'main'}));
+app.engine('hbs', exphbs({
+  defaultLayout: 'main',
+  helpers: { 
+    equal: equalsHelper, 
+    stringify: function(context ) { 
+      return JSON.stringify(context); 
+    }
+  }
+}));
 app.set('view engine', 'hbs');
+
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

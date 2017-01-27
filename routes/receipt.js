@@ -3,6 +3,7 @@ var config = require('./../config');
 var receiptService = require('../services/receiptService');
 var lookupsService = require('../services/lookupsService');
 var utils = require('../services/utils'); 
+var _ = require('lodash');
 
 var router = express.Router();
 
@@ -92,9 +93,82 @@ router.get('/new', function(req, res, next) {
   ; 
 });
 
+router.get('/edit/:id',  function(req, res, next) { 
+  Promise.all([
+    lookupsService.getAllCommodityCategories(), 
+    lookupsService.getAllCommodities(), 
+    lookupsService.getAllProjects(),
+    lookupsService.getAllStores(), 
+    lookupsService.getAllTransporters(),
+    receiptService.getReceiptById(req.params.id)
+  ]).then( function( results ) { 
+
+    var receipt = results[5].data; 
+
+
+    var categoriesWillPopulate = Promise.all( _.map(receipt.receiptLines, function(it ) { return lookupsService.getCommodityCategoryById(it.commodityCategoryId)})).then( function( resps ) {
+      _.forEach( resps, function( result, index ) {
+        receipt.receiptLines[index].commodityCategory = result.data.Name; 
+      }); 
+    }); 
+
+    var commoditiesWillPopulate = Promise.all( _.map(receipt.receiptLines, function(it ) { return lookupsService.getCommodityById(it.commodityId)})).then( function( resps ) {
+      _.forEach( resps, function( result, index ) {
+        receipt.receiptLines[index].commodity = result.data.Name; 
+      }); 
+    }); 
+
+    var projectsWillPopulate = Promise.all( _.map(receipt.receiptLines, function(it ) { return lookupsService.getProjectById(it.projectId)})).then( function( resps ) {
+      _.forEach( resps, function( result, index ) {
+        receipt.receiptLines[index].project = result.data.Value; 
+      }); 
+    });
+
+    
+
+
+    Promise.all( [categoriesWillPopulate, commoditiesWillPopulate, projectsWillPopulate]).then(function() {
+
+      receipt.receiptLines = _.map(receipt.receiptLines, function(it ) { it.uid = it.id; return it; }); 
+      
+      res.render( 'receipt/edit', 
+      { 
+        commodityCategories: results[0].data, 
+        commodities: results[1].data, 
+        projects: results[2].data,
+        stores: results[3].data, 
+        transporters: results[4].data,
+        receipt: receipt,
+        title: "Edit GRN"
+     });
+
+    })
+    .catch(function(error) { 
+      next(error.toString());
+    }); 
+
+
+
+    
+  })
+  
+});
+
 router.post( '/', function(req, res, next) {
 
   receiptService.saveReceipt(req.body.receipt)
+  .then( function(response) { 
+    res.json({ id: response.data.id });
+  })
+  .catch( function( error) { 
+    res.json({errorMessage: "Save failed. Please try again shortly!"});
+  });
+ 
+}); 
+
+router.put( '/', function(req, res, next) {
+
+  receiptService.updateReceipt(req.body.id, req.body.receipt)
   .then( function(response) { 
     res.json({ id: response.data.id });
   })

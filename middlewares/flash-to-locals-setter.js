@@ -1,6 +1,8 @@
 module.exports = function(req, res, next) {
 
-  req.locals.flash_message = req.flash('message');
+  if( req.locals) { 
+    req.locals.flash_message = req.flash('message');
+  }
 
   next();
 }; 

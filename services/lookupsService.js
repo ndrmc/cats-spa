@@ -21,5 +21,14 @@ module.exports = {
     }, 
     getStoreById( storeId ) { 
         return axios.get( catsV1BaseUri + "Store/Get/" + storeId); 
+    }, 
+    getCommodityCategoryById( commodityCategoryId )  { 
+        return axios.get( catsV1BaseUri + "CommodityType/GetCommodityType/" + commodityCategoryId); 
+    }, 
+    getCommodityById( commodityId ) {
+        return axios.get( catsV1BaseUri + "Commodity/Get/" + commodityId); 
+    }, 
+    getProjectById( projectId ) { 
+        return axios.get( catsV1BaseUri + "ProjectCode/Get/" + projectId); 
     }
 }
