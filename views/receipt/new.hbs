@@ -275,12 +275,12 @@
                     valid = $("#transporter_info_form").parsley().validate() && valid ; //To avoid && from short circuiting
 
                     if( !valid ) { 
-                        $.jGrowl("All fields should have valid values to post."); 
+                        $.jGrowl("All fields should have valid values to post.", { themeState: 'error'}); 
                         return; 
                     }
 
                     if( receiptLines.length === 0 ) { 
-                        $.jGrowl("You should have atleat one commodity in the receipt."); 
+                        $.jGrowl("You should have atleat one commodity in the receipt.", { themeState: 'error'}); 
                         return; 
                     }
                 }
@@ -308,10 +308,10 @@
                     dataType: 'json'
                 }).done(function( data ) { 
                     if( data.errorMessage ) { 
-                        $.jGrowl(data.errorMessage); 
+                        $.jGrowl(data.errorMessage, { themeState: 'error'}); 
                     }
                     else { 
-                        $.jGrowl( "Saved!");
+                        $.jGrowl( "Saved!", {themeState: 'success'});
 
                         window.location.href = '/receipts'; 
                     
