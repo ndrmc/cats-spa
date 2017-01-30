@@ -16,6 +16,9 @@
 
     <!-- Custom Theme Style -->
     <link href="/css/custom.min.css" rel="stylesheet">
+     <!-- bootstrap-daterangepicker -->
+    <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet"></script>
+
   </head>
 
   <body class="nav-md">
@@ -41,7 +44,7 @@
                 <ul class="nav side-menu">
                   <li><a href="index.html"> <i class="fa fa-home"></i> Home</a></li>
 
-                  <li><a><i class="fa fa-edit"></i> Operation </a></li>
+                  <li><a href="/operations"><i class="fa fa-edit"></i> Operation </a></li>
 
                   <li><a><i class="fa fa-home"></i> Stock <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -97,36 +100,9 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-        <div class="right_col" role="main">
-          <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>{{title}}</h3>
-              </div>
 
-              {{!--<div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>--}}
-            </div>
+        {{{body}}}
 
-            <div class="clearfix"></div>
-
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-
-                {{{body}}}
-
-              </div>
-            </div>
-          </div>
-        </div>
         <!-- /page content -->
 
         <!-- footer content -->
@@ -148,8 +124,25 @@
     <script src="/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="/vendors/nprogress/nprogress.js"></script>
+    <!-- bootstrap-daterangepicker -->
+     <script src="/vendors/moment/min/moment.min.js"></script>
+    <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     
     <!-- Custom Theme Scripts -->
     <script src="/js/custom.min.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('.date-picker').daterangepicker({
+          singleDatePicker: true,
+          calender_style: "picker_4",
+          format: 'yyyy-mm-dd hh:ii'
+        }, function(start, end, label) {
+          console.log(start.toISOString(), end.toISOString(), label);
+          
+        });
+      });
+    </script>
+    
   </body>
 </html>
