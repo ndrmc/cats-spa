@@ -16,15 +16,44 @@
 
     <!-- Custom Theme Style -->
     <link href="/css/custom.min.css" rel="stylesheet">
+  
      <!-- bootstrap-daterangepicker -->
     <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet"></script>
 
-     <link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-    <link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-    <link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-    <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
+    {{!--Date Range Picker--}}
+    <link rel="stylesheet" href="/vendors/bootstrap-daterangepicker/daterangepicker.css" />
+
+
+   
+    <!-- jQuery -->
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+     <!-- Parsley -->
+    <script src="/vendors/parsleyjs/dist/parsley.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/vendors/nprogress/nprogress.js"></script>
+
+    <script src="/vendors/moment/min/moment.min.js"></script>
+    
+    <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    {{!--DataTables--}}
+    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+
+    <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.2.12/jquery.jgrowl.min.css" />
+	  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.2.12/jquery.jgrowl.min.js"></script>
+
+    
+    <!-- Custom Theme Scripts -->
+    <script src="/js/custom.min.js"></script>
 
   </head>
 
@@ -123,20 +152,13 @@
       </div>
     </div>
 
-    <!-- jQuery -->
-    <script src="/vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="/vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="/vendors/nprogress/nprogress.js"></script>
-    <!-- bootstrap-daterangepicker -->
-     <script src="/vendors/moment/min/moment.min.js"></script>
-    <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-    
-    <!-- Custom Theme Scripts -->
-    <script src="/js/custom.min.js"></script>
+
+    <script>
+      $(function() {
+        {{#if req.locals.flash_message }} 
+          $.jGrowl("{{req.locals.flash_message}}");
+        {{/if}}
+
 
     
     <!-- Datatables -->
@@ -153,19 +175,15 @@
     <script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
     <script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
 
-    <script type="text/javascript">
-      $(document).ready(function() {
         $('.date-picker-1').daterangepicker({
           singleDatePicker: true,
-          calender_style: "picker_4",
-          format: 'yyyy-mm-dd hh:ii'
-        }, function(start, end, label) {
-          console.log(start.toISOString(), end.toISOString(), label);
-          
+          locale: {
+            format: 'YYYY-MM-DD'
+          },
         }),
-        $('.dataTable').DataTable();
-      });
+
+        $( '.basic-datatable').DataTable(); 
+      }); 
     </script>
-    
   </body>
 </html>
