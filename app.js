@@ -43,7 +43,7 @@ app.engine('hbs', exphbs({
       }
     }, 
     isPresent: function (val, array) {
-        return array.indexof(val) !== -1; 
+        return array.indexOf(val) !== -1; 
     },
     get: function(map,key){
     return map[key];
