@@ -117,7 +117,7 @@
                                             <select name="commodity" id="commodity" class="form-control" required>
                                                 <option value="">-- Choose --</option>
                                                 {{#each commodities as |commodity| }}
-                                                    <option value="{{commodity.CommodityID}}">{{commodity.Name}}</option>
+                                                    <option class="{{commodity.CommodityTypeID}} hidden" value="{{commodity.CommodityID}}">{{commodity.Name}}</option>
                                                 {{/each}}
                                             </select>
                                         </td>
@@ -254,6 +254,16 @@
 
     $(
         function() { 
+
+            $("#commodityCategory").change( function() { 
+                var val = $(this).val(); 
+
+                $("select#commodity option").addClass('hidden'); 
+
+                $("select#commodity option." + val ).removeClass('hidden'); 
+
+                $("select#commodity option:first" ).removeClass('hidden'); 
+            }); 
 
             $('.save-grn').click( function(e) { 
                 e.preventDefault(); 
