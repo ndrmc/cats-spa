@@ -9,14 +9,20 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var flashToLocals = require('./middlewares/flash-to-locals-setter');
 var equalsHelper = require('handlebars-helper-equal'); 
-
+var moment = require('moment');
 
 /* Routes */
 var index = require('./routes/index');
 var users = require('./routes/users');
 var receipt = require('./routes/receipt.js');
+var operation = require('./routes/operation.js');
 
 var app = express();
+
+var DateFormats = {
+       short: "DD MMMM,  YYYY",
+       long: "dddd DD MMMM, YYYY HH:mm"
+};
 
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
@@ -26,6 +32,18 @@ app.engine('hbs', exphbs({
     equal: equalsHelper, 
     stringify: function(context ) { 
       return JSON.stringify(context); 
+    }, 
+    formatDate:  function (date, format) {
+      if (moment) {
+          // can use other formats like 'lll' too
+          format = DateFormats[format] || format;
+          return moment(date).format(format);
+      } else {
+          return date;
+      }
+    }, 
+    isPresent: function (val, array) {
+        return array.indexof(val) !== -1; 
     }
   }
 }));
@@ -48,6 +66,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/receipts', receipt);
+app.use('/operations', operation);
 
 app.use( flashToLocals);
 
