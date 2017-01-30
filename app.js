@@ -39,7 +39,11 @@ hbs.registerHelper("isPresent", function (val, a) {
         }
     }
     return false;
-})
+});
+
+hbs.registerHelper("get", function(map,key){
+    return map[key];
+});
 
 
 // view engine setup

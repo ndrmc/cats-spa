@@ -59,7 +59,7 @@
               <div class="row">
                 <div class="col-md-4">
                   <div class="row">
-                   <label> Program: </label> <span> ## </span>
+                    <label> Program: </label> <span> ## </span>
                   </div>
                   <div class="row">
                     <label> Progress: </label> <span> ## </span>
@@ -72,9 +72,9 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="row"> <span>No of regions: </span>{{operationRegions.length}}</div>
-                  <div class="row"> <span>Total commodities: </span> </div>
-                  <div class="row"> <span>Total beneficiaries: </span> </div>
+                  <div class="row"> <label>No of regions: </label>{{operationRegions.length}}</div>
+                  <div class="row"> <label>Total commodities: </label> </div>
+                  <div class="row"> <label>Total beneficiaries: </label> </div>
                 </div>
                 <div class="col-md-4"></div>
               </div>
@@ -88,12 +88,12 @@
                 <ul id="myTab1" class="nav nav-tabs bar_tabs left" role="tablist">
                   <li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Request</a>
                   </li>
-                  <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Allocation</a>
+                  <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="true">Allocation</a>
                   </li>
-                  <li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb3" data-toggle="tab" aria-controls="profile" aria-expanded="false">Dispatch</a>
+                  <li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb3" data-toggle="tab" aria-controls="profile" aria-expanded="true">Dispatch</a>
                   </li>
                   </li>
-                  <li role="presentation" class=""><a href="#tab_content44" role="tab" id="profile-tabb4" data-toggle="tab" aria-controls="profile" aria-expanded="false">Delivery</a>
+                  <li role="presentation" class=""><a href="#tab_content44" role="tab" id="profile-tabb4" data-toggle="tab" aria-controls="profile" aria-expanded="true">Delivery</a>
                   </li>
                 </ul>
                 <div id="myTabContent2" class="tab-content">
@@ -104,10 +104,36 @@
                     <p> Allocation </p>
                   </div>
                   <div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
-                    <p> Dispatch </p>
-                  </div>
-                  <div role="tabpanel" class="tab-pane fade" id="tab_content44" aria-labelledby="profile-tab">
-                    <p> Delivery</p>
+                    <table class="table table-striped  no-footer ">
+                      <thead>
+                        <tr>
+                          <th>GIN No.</th>
+                          <th>Region </th>
+                          <th>Status</th>
+                          <th>Progress</th>
+                          {{#each commodities}}
+                          <th>{{this.name}}</th>
+                          {{/each}}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each dispatches as |dispatch|}}
+                        <tr>
+                          <td>{{dispatch.gin}}</td>
+                          <td>{{dispatch.region}}</td>
+                          <td>{{dispatch.status}}</td>
+                          <td>{{dispatch.progress}}</td>
+                          {{#each ../commodities}} {{!--
+                          <td>{{this.commodityId}}</td> --}}
+                          <td>{{get dispatch.commoditiesByCategory this.commodityId }} </td>
+                          {{/each}}
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content44" aria-labelledby="profile-tab">
+                      <p> Delivery</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -117,3 +143,4 @@
       </div>
     </div>
   </div>
+</div>

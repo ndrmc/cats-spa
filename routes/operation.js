@@ -2,53 +2,54 @@ var express = require('express');
 var router = express.Router();
 var operationService = require('./../services/operationService');
 
+
 var months = [{
-    id: 1,
-    name: "January"
-},{
-    id: 2,
-    name: "February"
-},
-{
-    id: 3,
-    name: "March"
-},
-{
-    id: 4,
-    name: "April"
-},
-{
-    id: 5,
-    name: "May"
-},
-{
-    id: 6,
-    name: "June"
-},
-{
-    id: 7,
-    name: "July"
-},
-{
-    id: 8,
-    name: "August"
-},
-{
-    id: 9,
-    name: "September"
-},
-{
-    id: 10,
-    name: "October"
-},
-{
-    id: 11,
-    name: "November"
-},
-{
-    id: 12,
-    name: "December"
-}
+        id: 1,
+        name: "January"
+    }, {
+        id: 2,
+        name: "February"
+    },
+    {
+        id: 3,
+        name: "March"
+    },
+    {
+        id: 4,
+        name: "April"
+    },
+    {
+        id: 5,
+        name: "May"
+    },
+    {
+        id: 6,
+        name: "June"
+    },
+    {
+        id: 7,
+        name: "July"
+    },
+    {
+        id: 8,
+        name: "August"
+    },
+    {
+        id: 9,
+        name: "September"
+    },
+    {
+        id: 10,
+        name: "October"
+    },
+    {
+        id: 11,
+        name: "November"
+    },
+    {
+        id: 12,
+        name: "December"
+    }
 ];
 
 router.get('/', function (req, res, next) {
@@ -72,7 +73,7 @@ router.get('/new', function (req, res, next) {
             operationService.getAllRations(),
             operationService.getAllRegions()
         ])
-        .then(function (results) {            
+        .then(function (results) {
             res.render('operation/new', {
                 plans: results[0].data,
                 programs: results[1].data,
@@ -150,9 +151,9 @@ router.post('/new', function (req, res, next) {
                         operations: operations
                     });
                 })
-                .catch(function(error){
+                .catch(function (error) {
                     console.log(error);
-                    next("Error fetching records. Reason: "+error.toString());
+                    next("Error fetching records. Reason: " + error.toString());
                 });
         })
         .catch(function (error) {
@@ -200,39 +201,58 @@ router.post('/:id', function (req, res, next) {
 router.get('/:id/details', function (req, res, next) {
     var id = req.params.id;
 
+
+
     operationService.getOperationById(id)
-    .then(function (response) {
+        .then(function (response) {
 
-        var operation = response.data;
-        var operationRegions = [];
+            var operation = response.data;
+            var operationRegions = [];
 
-        for (var i = 0; i < operation.operationRegions.length; i++) {
-            operationRegions.push(operation.operationRegions[i].regionId);
-        };
-        Promise.all([
-                operationService.getRequisitionsByOperation(operation),
-                operationService.getAllocationByOperation(id),
-                operationService.getDispatchesByOperation(id),
-                operationService.getDeliveriesByOperation(id)
-            ])
-            .then(function (results) {
+            for (var i = 0; i < operation.operationRegions.length; i++) {
+                operationRegions.push(operation.operationRegions[i].regionId);
+            };
+            Promise.all([
+                    operationService.getRequisitionsByOperation(operation),
+                    operationService.getAllocationByOperation(id),
+                    operationService.getDispatchesByOperation(id),
+                    operationService.getDeliveriesByOperation(id)
 
-                res.render('operation/details', {
-                    operation: operation,
-                    operationRegions: operationRegions,
-                    // requisitions: results[0].data,
-                    // allocations: results[1].data,
-                    // dispatches: results[2].data,
-                    // deliveries: results[3].data,
+                ])
+                .then(function (results) {
+                    var dispatches = results[2].data;
+                    var commoditiesByCategory = {};
+                    for (var i = 0; i < dispatches.length; i++) {
+                        for (var j = 0; j < dispatches[i].dispatchItems.length; j++) {
+
+                            var item = dispatches[i].dispatchItems[j];
+                            commoditiesByCategory[item.commodityId] = item.quantity;
+
+                        }
+                        dispatches[i].commoditiesByCategory = commoditiesByCategory;
+                        commoditiesByCategory = {};
+
+                    };
+
+                    console.log("dispatches after by category " + JSON.stringify(dispatches));
+                    res.render('operation/details', {
+                        operation: operation,
+                        operationRegions: operationRegions,
+                        // requisitions: results[0].data,
+                        // allocations: results[1].data,
+                        dispatches: results[2].data,
+                        // deliveries: results[3].data,
+                        commodities: operationService.getCommoditiesByOperation(operation.planId)
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    next(error.toString());
                 });
-            })
-            .catch(function (error) {
-                next(error.toString());
-            });
 
-    }).catch(function (error) {
+        }).catch(function (error) {
 
-    });
+        });
 });
 
 
