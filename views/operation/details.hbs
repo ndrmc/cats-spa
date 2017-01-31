@@ -12,13 +12,13 @@
           <div class="x_title">
             <div class="row">
               <div class="col-xs-8">
-                <h2>Operation Details</h2>
+                <h2>Operation ({{operation.name}})</h2>
               </div>
               <div class="col-xs-4 ">
                 <div class="row">
-                  <div class="col-xs-4">
+                  <div class="col-xs-6">
                   </div>
-                  <div class="col-xs-4">
+                  <div class="col-xs-2">
                     <a href="/operations/{{operation.id}}" class="btn btn-primary">Edit</a>
                   </div>
                   <div class="btn-group col-xs-4">
@@ -28,16 +28,18 @@
                           <span class="sr-only">Toggle Dropdown</span>
                         </button>
                     <ul class="dropdown-menu" role="menu">
-                      <li><a href="#">Request</a>
-                      </li>
+                      <li><a href="#">Add Region</a></li>
                       <li class="divider"></li>
-                      <li><a href="#">Allocation</a>
-                      </li>
-                      <li><a href="#">Dispatch</a>
-                      </li>
+
+                      <li><a href="#">Summary</a</li>
+                       <li class="divider"></li>
+
+                      <li><a href="#">Delete</a> </li>                     
+                      <li><a href="#">Close</a> </li>
                       <li class="divider"></li>
-                      <li><a href="#">Close</a>
-                      </li>
+
+                      <li><a href="#">Export</a></li>
+                      <li><a href="#">Print</a></li>
                     </ul>
                   </div>
                 </div>
@@ -46,10 +48,9 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-            <br>
             <div class="panel">
               <div class="row">
-                <label>{{operation.name}} </label> - <label>From {{formatDate operation.estimatedStart 'short'}} to {{formatDate operation.plannedEnd 'short'}}</label>
+                <label>{{operation.name}} </label> <label>(From {{formatDate operation.estimatedStart 'short'}} to {{formatDate operation.plannedEnd 'short'}} )</label>
               </div>
               <div class="row">
                 <button type="button" {{#equal operation.status "ongoing" }} class="btn btn-warning btn-xs" {{else}} class="btn btn-dark btn-xs"
@@ -59,10 +60,10 @@
               <div class="row">
                 <div class="col-md-4">
                   <div class="row">
-                    <label> Program: </label> <span> ## </span>
+                    <label> Program: </label> <span> {{operation.programId}} </span>
                   </div>
                   <div class="row">
-                    <label> Progress: </label> <span> ## </span>
+                    <label> Progress: </label> <span>  </span>
                   </div>
                   <div class="row">
                     <label>Year: </label> <span> {{operation.year}} </span>
@@ -72,9 +73,9 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="row"> <label>No of regions: </label>{{operationRegions.length}}</div>
-                  <div class="row"> <label>Total commodities: </label> </div>
-                  <div class="row"> <label>Total beneficiaries: </label> </div>
+                  <div class="row"> <label>No of regions: </label> <span>{{operationRegions.length}}</span></div>
+                  <div class="row"> <label>Total commodities: </label> <span>{{commodities.length}}</span></div>
+                  <div class="row"> <label>Total beneficiaries: </label> <span>{{benificiaryNo}}</span> </div>
                 </div>
                 <div class="col-md-4"></div>
               </div>
@@ -98,13 +99,64 @@
                 </ul>
                 <div id="myTabContent2" class="tab-content">
                   <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
-                    <p> Request </p>
+                     <table class="table table-striped no-footer ">                    
+                      <thead>
+                        <tr>                         
+                          <th>Region </th>
+                          <th>Status</th>
+                          <th>Requested date</th>
+                          <th>No. of Benificiaries</th>                          
+                          <th>No. of Woredas</th>
+                          <th>No. of FDPs</th>                        
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each requests as |request|}}
+                        <tr>
+                         
+                          <td>{{request.RegionName}}</td>
+                          <td>{{request.Status}}</td>
+                          <td>{{formatDate request.RequestedDate 'short'}}</td>
+                          <td>{{request.BeneficiaryNo}}</td>
+                          <td>{{request.NumberOfWoredas}}</td>
+                          <td>{{request.NumberOfFPDs}}</td>
+                          
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
                   </div>
                   <div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
-                    <p> Allocation </p>
+                   
+                     <table class="table table-striped no-footer ">                    
+                      <thead>
+                        <tr>                         
+                          <th>Region </th>
+                          <th>Status</th>
+                          <th>Progress</th>
+                          {{#each commodities}}
+                          <th>{{this.name}}</th>
+                          {{/each}}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each allocations as |allocation|}}
+                        <tr>
+                         
+                          <td>{{allocation.RegionName}}</td>
+                          <td>{{allocation.Status}}</td>
+                          <td>{{allocation.Progress}}</td>
+                          {{#each ../commodities}} {{!--
+                          <td>{{this.commodityId}}</td> --}}
+                          <td>{{get allocation.commodityMap this.commodityId }} </td>
+                          {{/each}}
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
                   </div>
                   <div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
-                    <table class="table table-striped  no-footer ">
+                    <table class="table table-striped no-footer ">
                       <thead>
                         <tr>
                           <th>GIN No.</th>

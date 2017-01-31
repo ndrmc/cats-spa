@@ -213,10 +213,11 @@ router.get('/:id/details', function (req, res, next) {
                 operationRegions.push(operation.operationRegions[i].regionId);
             };
             Promise.all([
-                    operationService.getRequisitionsByOperation(operation),
-                    operationService.getAllocationByOperation(id),
+                    operationService.getRequestsByOperation(operation),
+                    operationService.getAllocationByOperation(operation),
                     operationService.getDispatchesByOperation(id),
-                    operationService.getDeliveriesByOperation(id)
+                    operationService.getDeliveriesByOperation(id),
+                    operationService.getCommoditiesByOperation(operation.planId)
 
                 ])
                 .then(function (results) {
@@ -233,20 +234,60 @@ router.get('/:id/details', function (req, res, next) {
                         commoditiesByCategory = {};
 
                     };
+                     console.log("dispatches after by category " + JSON.stringify(dispatches));
+                    var allocations = results[1].data;
+                   
+                    var commodityMap ={};
 
-                    console.log("dispatches after by category " + JSON.stringify(dispatches));
+                     for (var i = 0; i < allocations.length; i++) {
+                        for (var j = 0; j < allocations[i].Commodities.length; j++) {
+
+                            var commodity = allocations[i].Commodities[j];
+                            commodityMap[commodity.CommodityId] = commodity.AllocatedAmount;
+
+                        }
+                        allocations[i].commodityMap = commodityMap;
+                        commodityMap = {};
+
+                    };
+
+                     console.log("allocations with map " + JSON.stringify(allocations));
+
+
+                    
+                var hrd = results[4].data[0];
+                var rationDetails = hrd.Ration.RationDetail;
+                var commodities = [];
+
+                for (var i = 0; i < rationDetails.length; i++) {
+                    commodities.push({
+                        name: rationDetails[i].CommodityName,
+                        commodityId: rationDetails[i].CommodityID
+                    });
+
+                }
+         
+
+            console.log("commodities: ", commodities);
+            var requests = results[0].data;
+            var benificiaryNo = null;
+            for(var r=0; r<requests.length; r++){
+                benificiaryNo += +requests[r].BeneficiaryNo;
+            }
+                   
                     res.render('operation/details', {
                         operation: operation,
                         operationRegions: operationRegions,
-                        // requisitions: results[0].data,
-                        // allocations: results[1].data,
+                        requests: requests,
+                        allocations:allocations,
                         dispatches: results[2].data,
                         // deliveries: results[3].data,
-                        commodities: operationService.getCommoditiesByOperation(operation.planId)
+                        commodities: commodities,
+                        benificiaryNo: benificiaryNo
                     });
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log("Promises: operationdetails",error);
                     next(error.toString());
                 });
 
