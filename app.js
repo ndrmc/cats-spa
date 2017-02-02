@@ -14,8 +14,10 @@ var moment = require('moment');
 /* Routes */
 var index = require('./routes/index');
 var users = require('./routes/users');
-var receipt = require('./routes/receipt.js');
+var receipt = require('./routes/receipt');
 var operation = require('./routes/operation.js');
+
+var dispatch = require('./routes/dispatch');
 
 var app = express();
 
@@ -60,6 +62,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('s3cr3t')); //TODO: change/configure me 
 app.use(session({cookie: { maxAge: 60000 }}));
 app.use(flash());
+app.use( flashToLocals);
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -68,8 +72,9 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/receipts', receipt);
 app.use('/operations', operation);
+app.use('/dispatches', dispatch);
 
-app.use( flashToLocals);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

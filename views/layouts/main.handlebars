@@ -16,6 +16,8 @@
 
     <!-- Custom Theme Style -->
     <link href="/css/custom.min.css" rel="stylesheet">
+    
+    <link href="/css/style.css" rel="stylesheet">
   
      <!-- bootstrap-daterangepicker -->
     <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet"></script>
@@ -155,12 +157,19 @@
 
     <script>
       $(function() {
-        if (req.locals.flash_message ){
+        {{#if req.locals.flash_message }} 
           $.jGrowl("{{req.locals.flash_message}}");
-      }
-      });
+        {{/if}}
 
-     
+        {{#if req.locals.flash_error }} 
+          $.jGrowl("{{req.locals.flash_error}}"{themeState: 'error'});
+        {{/if}}
+
+        {{#if req.locals.flash_success }} 
+          $.jGrowl("{{req.locals.flash_success}}", {themeState: 'success'});
+        {{/if}}
+
+
         $('.date-picker').daterangepicker({
           singleDatePicker: true,
           locale: {
@@ -169,7 +178,7 @@
         });
 
         $( '.basic-datatable').DataTable(); 
-     
+      }); 
     </script>
   </body>
 </html>
