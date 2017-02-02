@@ -1,0 +1,136 @@
+<div class="form-group">
+    <label for="regionId" class="control-label col-md-3 col-sm-3 col-xs-12">Region</label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <select name="regionId" id="regionId" class="form-control" >
+            <option value="">-- Choose --</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="zoneId" class="control-label col-md-3 col-sm-3 col-xs-12">Zone</label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <select name="zoneId" id="zoneId" class="form-control">
+            <option value="">-- Choose --</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="woredaId" class="control-label col-md-3 col-sm-3 col-xs-12">Woreda</label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <select name="woredaId" id="woredaId" class="form-control" >
+            <option value="">-- Choose --</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fdpId" class="control-label col-md-3 col-sm-3 col-xs-12">FDP</label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <select name="fdpId" id="fdpId" class="form-control {{classes}}" {{#if required }}required{{/if}}>
+            <option value="">-- Choose --</option>
+        </select>
+    </div>
+</div>
+
+<script>
+    $( function() { 
+        var catsV1BaseUri = '{{cats_v1_uri}}'; 
+
+
+
+
+        var adminUnitTypes = {{{stringify admin_unit_types}}}; //from app.locals in app.js
+        var allAdminUnits = []; 
+
+        $('#regionId').change( function( e ) { 
+            var val = $(this).val(); 
+
+            if( '' === val ) { 
+                return; 
+            }
+
+            $('#zoneId, #woredaId, #fdpId').empty();
+
+            var zones = $.grep( allAdminUnits, function(elem) { 
+                if( elem === null ) return false; 
+
+                return elem.ParentID == val; 
+            }); 
+
+            populateSelectFromList( zones, 'zoneId'); 
+        }); 
+
+        $('#zoneId').change( function( e ) { 
+            var val = $(this).val(); 
+
+            if( '' === val ) { 
+                return; 
+            }
+
+            $('#woredaId, #fdpId').empty();
+
+            var zones = $.grep( allAdminUnits, function(elem) { 
+                if( elem === null ) return false; 
+
+                return elem.ParentID == val; 
+            }); 
+
+            populateSelectFromList( zones, 'woredaId'); 
+        });
+
+        $('#woredaId').change( function( e ) { 
+            var val = $(this).val(); 
+
+            if( '' === val ) { 
+                return; 
+            }
+
+            $.ajax({
+            url: catsV1BaseUri + 'FDP/Woreda/' + val ,
+            success: function (data, status) {
+                 
+                var options = ['<option value="">-- Choose --</option>'];
+                $.each( data, function(index, item) { 
+                    options.push( '<option value="' + item.FDPID + '">' + item.Name + '</option>'); 
+                });
+
+                $("#fdpId" ).empty().append(options.join('')); 
+                
+            }
+        });
+
+
+            
+        });
+
+        $.ajax({
+            url: catsV1BaseUri + 'AdminUnit/GetAdminUnits' ,
+            success: function (data, status) {
+                allAdminUnits = data; 
+
+                var regions = $.grep( allAdminUnits, function(elem, index) { 
+                    if( elem === null ) return false; 
+
+                    return elem.AdminUnitTypeID === adminUnitTypes["REGION"];
+                });
+
+                populateSelectFromList(regions, 'regionId');
+
+                
+            }
+        });
+
+        function populateSelectFromList( entities, elementId ) {
+            var options = ['<option value="">-- Choose --</option>'];
+            $.each( entities, function(index, item) { 
+                options.push( '<option value="' + item.AdminUnitID + '">' + item.Name + '</option>'); 
+            });
+
+            $("#" + elementId ).empty().append(options.join('')); 
+        }
+
+
+    }); 
+</script>

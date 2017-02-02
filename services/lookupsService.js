@@ -2,6 +2,7 @@ var config = require('./../config');
 var axios = require('axios');
 
 var catsV1BaseUri = config.cats_v1_base_uri; 
+var catsV2BaseUri = config.cats_v2_base_uri; 
 
 module.exports = { 
     getAllCommodityCategories: function() {
@@ -30,5 +31,11 @@ module.exports = {
     }, 
     getProjectById( projectId ) { 
         return axios.get( catsV1BaseUri + "ProjectCode/Get/" + projectId); 
+    }, 
+    getAllOperations() { 
+        return axios.get( catsV2BaseUri + "operations");
+    }, 
+    getFdpById( id ) { 
+        return axios.get( catsV1BaseUri + "FDP/Get/" + id )
     }
 }

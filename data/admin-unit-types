@@ -1,0 +1,6 @@
+module.exports = { 
+    FEDERAL: 1,
+    REGION: 2, 
+    ZONE: 3, 
+    WOREDA: 4
+}

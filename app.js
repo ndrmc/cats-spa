@@ -10,6 +10,7 @@ var flash = require('connect-flash');
 var flashToLocals = require('./middlewares/flash-to-locals-setter');
 var equalsHelper = require('handlebars-helper-equal'); 
 var moment = require('moment');
+var config = require('./config'); 
 
 /* Routes */
 var index = require('./routes/index');
@@ -19,7 +20,16 @@ var operation = require('./routes/operation.js');
 
 var dispatch = require('./routes/dispatch');
 
+var adminUnitTypes = require('./data/admin-unit-types');
+
 var app = express();
+
+
+
+app.locals.cats_v1_uri = config.cats_v1_base_uri; 
+app.locals.cats_v2_uri = config.cats_v2_base_uri; 
+app.locals.admin_unit_types = adminUnitTypes; 
+
 
 var DateFormats = {
        short: "DD MMMM,  YYYY",
@@ -72,8 +82,6 @@ app.use('/users', users);
 app.use('/receipts', receipt);
 app.use('/operations', operation);
 app.use('/dispatches', dispatch);
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

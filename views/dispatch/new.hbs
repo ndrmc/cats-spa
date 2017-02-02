@@ -1,0 +1,361 @@
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Stock Dispatch</h3>
+      </div>
+
+      {{!--<div class="title_right">
+        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div>
+        </div>
+      </div>--}}
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>New</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+               
+            <form id="dispatchForm" class="form-horizontal form-label-left">
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="gin">GIN <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="gin" name="gin" required="required" autofocus class="form-control col-md-7 col-xs-12 dispatch-field">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="operation">Operation <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select name="operationId" id="operation" class="form-control dispatch-field" required>
+                            <option value="">-- Choose --</option>
+                            {{#each operations as |operation| }}
+                                <option value="{{operation.id}}">{{operation.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+
+                 <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="requisition-number">Requisition Number <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="requisition-number" name="requisitionNo" required="required" class="form-control col-md-7 col-xs-12 dispatch-field">
+                    </div>
+                </div>
+
+                 <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="dispatched-date">Dispatched Date <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="dispatched-date" name="dispatchedDate" required="required" class="date-picker form-control col-md-7 col-xs-12 dispatch-field">
+                    </div>
+                </div>
+
+                {{> commons/fdpSelector required=true classes="dispatch-field" }}
+
+            </form>
+
+                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul class="nav nav-tabs bar_tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">
+                                Commodities
+                            </a>
+                        </li>
+                        <li role="presentation" class="">
+                            <a href="#transporter_info_tab" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">
+                                Transporter
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                            <form action="/" id="dispatchItemForm">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Commodity Category</th>
+                                        <th>Commodity</th>
+                                        <th>Quantity(Mt)</th>
+                                        <th>Project</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dispatchItemsTableBody">
+                                    <tr>
+                                        
+                                        <td>
+                                            <select name="commodityCategory" id="commodityCategory" class="form-control" required>
+                                                <option value="">-- Choose --</option>
+                                                {{#each commodityCategories as |category| }}
+                                                    <option value="{{category.Id}}">{{category.Name}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="commodity" id="commodity" class="form-control" required>
+                                                <option value="">-- Choose --</option>
+                                                {{#each commodities as |commodity| }}
+                                                    <option class="{{commodity.CommodityTypeID}} hidden" value="{{commodity.CommodityID}}">{{commodity.Name}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control" id="commodity-amount" required/>
+                                        </td>
+                                        <td>
+                                            <select name="project" id="project" class="form-control" required>
+                                                <option value="">-- Choose --</option>
+                                                {{#each projects as |project| }}
+                                                    <option value="{{project.ProjectCodeID}}">{{project.Value}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </td>
+                                        
+                                        
+                                        <td>
+                                            <a href="#" class="btn btn-primary" id="add-dispatch-line">Add</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                        
+                        <div role="tabpanel" class="tab-pane fade" id="transporter_info_tab" aria-labelledby="profile-tab">
+                            <form id="transporter_info_form">
+                                <div class="form-group col-md-6">
+                                    <label  for="weightBridgeTicket">Weight Bridge Ticket # <span class="required">*</span>
+                                    </label>
+                                    <div>
+                                        <input type="text" id="weightBridgeTicket" name="weightBridgeTicketNumber" required="required" class="form-control dispatch-field">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label  for="transporter">Transporter <span class="required">*</span>
+                                    </label>
+                                    <div>
+                                        <select name="transporterId" id="transporter" required class="form-control dispatch-field">
+                                            <option value="">-- Choose --</option>
+                                            {{#each transporters as |transporter| }}
+                                                <option value="{{transporter.TransporterID}}">{{transporter.Name}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label  for="plateNumber">Plate # <span class="required">*</span>
+                                    </label>
+                                    <div>
+                                        <input type="text" id="plateNumber" name="truckPlateNumber" required="required" class="form-control dispatch-field" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label  for="trailerPlateNumber">Trailer Plate #
+                                    </label>
+                                    <div>
+                                        <input type="text" id="trailerPlateNumber" name="trailerPlateNumber" class="form-control dispatch-field">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label  for="driversName">Driver's Name
+                                    </label>
+                                    <div>
+                                        <input type="text" id="driversName" name="driver" class="form-control dispatch-field">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <label  for="remark">Remark
+                                    </label>
+                                    <div>
+                                        <textarea type="text" id="remark" name="remark" class="form-control dispatch-field"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="ln_solid"></div>
+
+                        <div class="form-group">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-primary save-grn">Save as draft</button>
+                                <button type="submit" class="btn btn-success save-grn" data-post="true">Save and Post</button>
+                                <a href="/dispatches" class="btn btn-default">Cancel</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+    var dispatchItemRowTemplate = '<tr id="$uid">' + 
+                                    '<td>$commCat</td>' + 
+                                    '<td>$comm</td>' +
+                                    '<td>$amount</td>' +
+                                    '<td>$proj</td>' +
+                                    '<td><i style="cursor:pointer;" class="remove-dispatch-line fa fa-times" data-line-uid="$uid" ></i></td>' +
+                                 '</tr>'; 
+
+    var dispatchItems = [];
+
+    $(
+        function() { 
+
+            $("#commodityCategory").change( function() { 
+                var val = $(this).val(); 
+
+                $("select#commodity option").addClass('hidden'); 
+
+                $("select#commodity option." + val ).removeClass('hidden'); 
+
+                $("select#commodity option:first" ).removeClass('hidden'); 
+            }); 
+
+            $('.save-grn').click( function(e) { 
+                e.preventDefault(); 
+
+                var isDraft = !$(this).data('post'); 
+
+                if( !isDraft ) { 
+                    var valid = $("#dispatchForm").parsley().validate(); 
+                    valid = $("#transporter_info_form").parsley().validate() && valid ; //To avoid && from short circuiting
+
+                    if( !valid ) { 
+                        $.jGrowl("All fields should have valid values to post.", { themeState: 'error'}); 
+                        return; 
+                    }
+
+                    if( dispatchItems.length === 0 ) { 
+                        $.jGrowl("You should have atleat one commodity in the dispatch.", { themeState: 'error'}); 
+                        return; 
+                    }
+                }
+
+                var dispatchDoc = {}; 
+
+                $('.dispatch-field').each( function() { 
+                    $this = $(this);
+
+                    dispatchDoc[$this.attr('name')] = $this.val(); 
+                }); 
+
+                dispatchDoc.dispatchItems = dispatchItems; 
+
+
+                dispatchDoc['draft'] = isDraft; 
+
+
+                console.log("dispatchDoc", dispatchDoc); 
+
+                $.ajax( {
+                    type: "POST",
+                    url: '/dispatches',
+                    data: { dispatch: JSON.stringify(dispatchDoc)},
+                    dataType: 'json'
+                }).done(function( data ) { 
+                    if( data.errorMessage ) { 
+                        $.jGrowl(data.errorMessage, { themeState: 'error'}); 
+                    }
+                    else { 
+                        $.jGrowl( "Saved!", {themeState: 'success'});
+
+                        window.location.href = '/dispatches'; 
+                    
+                    }
+                }); 
+                
+
+            }); 
+
+            $('#dispatchItemsTableBody').on( 'click', '.remove-dispatch-line', function() { 
+                var uid = $(this).data('line-uid'); 
+
+                $("#" + uid).fadeOut(); 
+
+                dispatchItems = $.grep( dispatchItems, function(item) { 
+                    return item.uid !== uid;
+                }); 
+            }); 
+
+            $('#add-dispatch-line').click( function() { 
+
+                if( !$("#dispatchItemForm").parsley().validate() ) { 
+                    return; 
+                }
+                var commodityCategoryId = $('#commodityCategory').val();  
+
+                var commCategoryName = $('#commodityCategory option:selected').text(); 
+
+                var commodityId = $("#commodity").val();
+
+                var commodityName = $("#commodity option:selected").text(); 
+
+                var amount = $("#commodity-amount").val(); 
+
+                var projectId = $("#project").val(); 
+
+                var projectName = $("#project option:selected").text(); 
+
+                var uid = Date.now(); 
+
+                dispatchItems.push( {
+                    uid: uid, 
+                    commodityCategoryId: commodityCategoryId, 
+                    commodityId: commodityId,
+                    quantity: amount, 
+                    projectId: projectId
+                });
+
+                $('#dispatchItemsTableBody').prepend( 
+                    dispatchItemRowTemplate.replace("$commCat", commCategoryName)
+                                          .replace("$comm", commodityName)
+                                          .replace("$amount", amount)
+                                          .replace("$proj", projectName)
+                                          .replace(/\$uid/g, uid)
+                ); 
+
+
+                $("#dispatchItemForm select, #dispatchItemForm input").val('');
+
+            });
+
+        }
+    ); 
+</script>
