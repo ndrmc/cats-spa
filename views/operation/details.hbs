@@ -1,0 +1,232 @@
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Operations page</h3>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <div class="row">
+              <div class="col-xs-8">
+                <h2>Operation ({{operation.name}})</h2>
+              </div>
+              <div class="col-xs-4 ">
+                <div class="row">
+                  <div class="col-xs-6">
+                  </div>
+                  <div class="col-xs-2">
+                    <a href="/operations/{{operation.id}}" class="btn btn-primary">Edit</a>
+                  </div>
+                  <div class="btn-group col-xs-4">
+                    <button type="button" class="btn btn-danger">Tasks</button>
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                          <span class="caret"></span>
+                          <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#" data-toggle="modal" data-target=".bs-example-modal-sm">Add Region</a></li>
+                      <li class="divider"></li>
+
+                      <li><a href="#">Summary</a</li>
+                       <li class="divider"></li>
+
+                      <li><a href="#">Delete</a> </li>                     
+                      <li><a href="#">Close</a> </li>
+                      <li class="divider"></li>
+
+                      <li><a href="#">Export</a></li>
+                      <li><a href="#">Print</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="panel">
+              <div class="row">
+                <label>{{operation.name}} </label> <label>(From {{formatDate operation.estimatedStart 'short'}} to {{formatDate operation.plannedEnd 'short'}} )</label>
+              </div>
+              <div class="row">
+                <button type="button" {{#equal operation.status "ongoing" }} class="btn btn-warning btn-xs" {{else}} class="btn btn-dark btn-xs"
+                  {{/equal}}>{{operation.status}}
+                  </button>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="row">
+                    <label> Program: </label> <span> {{operation.programId}} </span>
+                  </div>
+                  <div class="row">
+                    <label> Progress: </label> <span>  </span>
+                  </div>
+                  <div class="row">
+                    <label>Year: </label> <span> {{operation.year}} </span>
+                  </div>
+                  <div class="row">
+                    <label> Round: </label> <span> {{operation.round}} </span>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="row"> <label>No of regions: </label> <span>{{operationRegions.length}}</span></div>
+                  <div class="row"> <label>Total commodities: </label> <span>{{commodities.length}}</span></div>
+                  <div class="row"> <label>Total beneficiaries: </label> <span>{{benificiaryNo}}</span> </div>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+              <div class="row">
+                <a href="#">Analytics & Reports</a>
+              </div>
+              <br>
+            </div>
+            <div class="panel">
+              <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab1" class="nav nav-tabs bar_tabs left" role="tablist">
+                  <li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Request</a>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Allocation</a>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb3" data-toggle="tab" aria-controls="profile" aria-expanded="false">Dispatch</a>
+                  </li>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content44" role="tab" id="profile-tabb4" data-toggle="tab" aria-controls="profile" aria-expanded="false">Delivery</a>
+                  </li>
+                </ul>
+                <div id="myTabContent2" class="tab-content">
+                  <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
+                     <table class="table table-striped no-footer ">                    
+                      <thead>
+                        <tr>                         
+                          <th>Region </th>
+                          <th>Status</th>
+                          <th>Requested date</th>
+                          <th>No. of Benificiaries</th>                          
+                          <th>No. of Woredas</th>
+                          <th>No. of FDPs</th>                        
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each operation.operationRegions as |region|}}
+                        <td> {{lookup ../regionsMap region.regionId }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'Status' }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'RequestedDate' }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'BeneficiaryNo' }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'NumberOfWoredas' }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'NumberOfFPDs' }} </td>
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+                   
+                     <table class="table table-striped no-footer ">                    
+                      <thead>
+                        <tr>                         
+                          <th>Region </th>
+                          <th>Status</th>
+                          <th>Progress</th>
+                          {{#each commodities}}
+                          <th>{{this.name}}</th>
+                          {{/each}}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each operation.operationRegions as |region|}}
+                        <tr>  
+                          <td>{{lookup ../regionsMap region.regionId }}</td>
+                          <td>{{lookup (lookup ../allocations region.regionId) 'Status' }} </td>
+                          <td>{{lookup (lookup ../allocations region.regionId) 'Progress' }}</td>
+                          {{#each ../commodities}} {{!--
+                          <td>{{this.commodityId}}</td> --}}   
+                          <td>{{lookup  (lookup  (lookup ../../allocations region.regionId) 'commodityMap')   this.commodityId}}  </td>         
+                          {{/each}}
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
+                    <table class="table table-striped no-footer ">
+                      <thead>
+                        <tr>
+                          <th>GIN No.</th>
+                          <th>Region </th>
+                          <th>Status</th>
+                          <th>Progress</th>
+                          {{#each commodities}}
+                          <th>{{this.name}}</th>
+                          {{/each}}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each dispatches as |dispatch|}}
+                        <tr>
+                          <td>{{dispatch.gin}}</td>
+                          <td>{{dispatch.region}}</td>
+                          <td>{{dispatch.status}}</td>
+                          <td>{{dispatch.progress}}</td>
+                          {{#each ../commodities}} {{!--
+                          <td>{{this.commodityId}}</td> --}}
+                          <td>{{lookup dispatch.commoditiesByCategory this.commodityId }} </td>
+                          {{/each}}
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                  </div>
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content44" aria-labelledby="profile-tab">
+                      <p> Delivery</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="display: none;" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+        <h4 class="modal-title" id="myModalLabel2">Add Region</h4>
+      </div>
+      <form  method="POST" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+      <div class="modal-body">          
+           <input type="hidden" name="operationId" value="{{operation.id}}">
+           {{#each operation.operationRegions}}
+              <input type="hidden" name="operationRegions" value="{{this.regionId}}">
+           {{/each}}
+           
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Region</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <select class="form-control col-md-7 col-xs-12" name="regionId" required="">
+                            <option value="">Choose..</option>
+                            {{#each regions}}
+                            <option value={{this.AdminUnitID}}>{{this.Name}}</option>
+                             {{/each}}
+                          </select>
+          </div>
+        </div>
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
