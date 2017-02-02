@@ -80,7 +80,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Program <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select  class="form-control col-md-7 col-xs-12" name="programId" required="">
+                          <select id="select-program" class="form-control col-md-7 col-xs-12" name="programId" required="" >
                             <option value="">Choose..</option>
                             {{#each programs}}
                             <option value={{this.ProgramID}}>{{this.Name}}</option>
@@ -91,11 +91,11 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">HRD / PSNP Plan</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                           <select  class="form-control col-md-7 col-xs-12" name="planId" required="">
+                           <select id = "select-plan" class="form-control col-md-7 col-xs-12" name="planId" required="">
                             <option value="">Choose..</option>
-                            {{#each plans}}
+                            {{!--{{#each plans}}
                             <option value={{this.PlanID}}>{{this.PlanName}}</option>
-                             {{/each}}
+                             {{/each}}--}}
                           </select>
                         </div>
                       </div>
@@ -175,13 +175,26 @@
     </div>
 
 <script type = "text/javascript" >
-    $("input:checkbox[name=region]:checked").each(function () {
-        operationRegions.push($(this).val());
-    });    
+  $("input:checkbox[name=region]:checked").each(function () {
+    operationRegions.push($(this).val());
+  });
+
+  $("#select-program").change(function () {
+    var plans = JSON.parse('{{{json plans}}}');
+    var select = document.getElementById("select-plan");
+ 
+    var val = $("#select-program").val();
+ 
+    $('#select-plan').empty();
+    $('#select-plan').append("<option value=''>Choose..</option>");
+    for (var i = 0; i < plans.length; i++) {
+      if (plans[i].ProgramID == val) {
+        $('#select-plan').append("<option value='" + plans[i].PlanID + "'>" + plans[i].PlanName + "</option>");
+      }
+    }
+  });
 
 </script>
 
-<script type="text/javascript">
 
-</script>
  
