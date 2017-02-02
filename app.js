@@ -55,13 +55,14 @@ app.engine('hbs', exphbs({
       }
     }, 
     isPresent: function (val, array) {
-        return array.indexof(val) !== -1; 
+        return array.indexOf(val) !== -1; 
+    },
+    json:function (content) {
+        return JSON.stringify(content);
     }
   }
 }));
 app.set('view engine', 'hbs');
-
-
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

@@ -60,21 +60,21 @@
                                             <div class="row">
                                                 <div class="col-xs-8"> </div>
                                                 <div class="col-xs-4 pull-right">
-                                                     <a class="btn btn-success">
+                                                     <a href = "/operations/{{this.id}}/details" class="btn btn-success">
                                                         <i class="fa fa-edit"></i> View
                                                     </a>
                                                    
                                                     {{#equal this.status 'ongoing' }}
                                                     <!--if operation status is archived-->
-                                                    <a href = "operations/{{this.id}}" class="btn btn-primary">
+                                                    <a href = "/operations/{{this.id}}" class="btn btn-primary">
                                                         <i class="fa fa-edit"></i> Edit
                                                     </a>
                                                     <div class="btn btn-group">
                                                         <button type="button" class="btn btn-danger">Tasks</button>
                                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
+                                                            <span class="caret"></span>
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                         </button>
                                                         <ul class="dropdown-menu" role="menu">
                                                             <li><a href="#">Request</a>
                                                             </li>
@@ -86,8 +86,7 @@
                                                             <li class="divider"></li>
                                                             <li><a href="#">Close</a>
                                                             </li>
-                                                        </ul>
-                                                        </a>
+                                                        </ul>                                            
                                                     </div>
                                                     {{/equal}}
                                                 </div>
@@ -103,3 +102,5 @@
                 </div>
             </div>
         </div>
+
+      
