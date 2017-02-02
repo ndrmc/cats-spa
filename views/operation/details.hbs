@@ -28,7 +28,7 @@
                           <span class="sr-only">Toggle Dropdown</span>
                         </button>
                     <ul class="dropdown-menu" role="menu">
-                      <li><a href="#">Add Region</a></li>
+                      <li><a href="#" data-toggle="modal" data-target=".bs-example-modal-sm">Add Region</a></li>
                       <li class="divider"></li>
 
                       <li><a href="#">Summary</a</li>
@@ -111,16 +111,13 @@
                         </tr>
                       </thead>
                       <tbody>
-                        {{#each requests as |request|}}
-                        <tr>
-                         
-                          <td>{{request.RegionName}}</td>
-                          <td>{{request.Status}}</td>
-                          <td>{{formatDate request.RequestedDate 'short'}}</td>
-                          <td>{{request.BeneficiaryNo}}</td>
-                          <td>{{request.NumberOfWoredas}}</td>
-                          <td>{{request.NumberOfFPDs}}</td>
-                          
+                        {{#each operation.operationRegions as |region|}}
+                        <td> {{lookup ../regionsMap region.regionId }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'Status' }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'RequestedDate' }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'BeneficiaryNo' }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'NumberOfWoredas' }} </td>
+                        <td> {{lookup (lookup ../requests region.regionId) 'NumberOfFPDs' }} </td>
                         </tr>
                         {{/each}}
                       </tbody>
@@ -140,15 +137,14 @@
                         </tr>
                       </thead>
                       <tbody>
-                        {{#each allocations as |allocation|}}
-                        <tr>
-                         
-                          <td>{{allocation.RegionName}}</td>
-                          <td>{{allocation.Status}}</td>
-                          <td>{{allocation.Progress}}</td>
+                        {{#each operation.operationRegions as |region|}}
+                        <tr>  
+                          <td>{{lookup ../regionsMap region.regionId }}</td>
+                          <td>{{lookup (lookup ../allocations region.regionId) 'Status' }} </td>
+                          <td>{{lookup (lookup ../allocations region.regionId) 'Progress' }}</td>
                           {{#each ../commodities}} {{!--
-                          <td>{{this.commodityId}}</td> --}}
-                          <td>{{get allocation.commodityMap this.commodityId }} </td>
+                          <td>{{this.commodityId}}</td> --}}   
+                          <td>{{lookup  (lookup  (lookup ../../allocations region.regionId) 'commodityMap')   this.commodityId}}  </td>         
                           {{/each}}
                         </tr>
                         {{/each}}
@@ -177,7 +173,7 @@
                           <td>{{dispatch.progress}}</td>
                           {{#each ../commodities}} {{!--
                           <td>{{this.commodityId}}</td> --}}
-                          <td>{{get dispatch.commoditiesByCategory this.commodityId }} </td>
+                          <td>{{lookup dispatch.commoditiesByCategory this.commodityId }} </td>
                           {{/each}}
                         </tr>
                         {{/each}}
@@ -194,6 +190,43 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div style="display: none;" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+        <h4 class="modal-title" id="myModalLabel2">Add Region</h4>
+      </div>
+      <form  method="POST" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+      <div class="modal-body">          
+           <input type="hidden" name="operationId" value="{{operation.id}}">
+           {{#each operation.operationRegions}}
+              <input type="hidden" name="operationRegions" value="{{this.regionId}}">
+           {{/each}}
+           
+        <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Region</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <select class="form-control col-md-7 col-xs-12" name="regionId" required="">
+                            <option value="">Choose..</option>
+                            {{#each regions}}
+                            <option value={{this.AdminUnitID}}>{{this.Name}}</option>
+                             {{/each}}
+                          </select>
+          </div>
+        </div>
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
     </div>
   </div>
 </div>

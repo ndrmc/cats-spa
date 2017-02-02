@@ -45,8 +45,8 @@ app.engine('hbs', exphbs({
     isPresent: function (val, array) {
         return array.indexOf(val) !== -1; 
     },
-    get: function(map,key){
-    return map[key];
+    json:function (content) {
+        return JSON.stringify(content);
     }
   }
 }));

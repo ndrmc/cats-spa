@@ -12,17 +12,17 @@ var MockAdapter = require('axios-mock-adapter');
 
 module.exports = {
     getAllOperations: function () {
-        return axios.get(catsV2BaseUri + "operation");
+        return axios.get(catsV2BaseUri + "operations");
     },
     createOperation: function (operation) {
         console.log('----about to post new operation----');
-        return axios.post(catsV2BaseUri + "operation", operation);
+        return axios.post(catsV2BaseUri + "operations", operation);
     },
     updateOperation: function (operation) {
-        return axios.put(catsV2BaseUri + "operation", operation);
+        return axios.put(catsV2BaseUri + "operations", operation);
     },
     getOperationById: function (id) {
-        return axios.get(catsV2BaseUri + "operation/" + id);
+        return axios.get(catsV2BaseUri + "operations/" + id);
     },
     getAllRegions: function () {
         return axios.get(catsV1BaseUri + "AdminUnit/GetAdminUnitsByAdminUnitType/2");
@@ -65,16 +65,17 @@ module.exports = {
         return axios.get(requestURL);
     },
     getDispatchesByOperation: function (operationId) {
-        return axios.get(catsV2BaseUri + "dispatch/operation/" + operationId);
+        return axios.get(catsV2BaseUri + "dispatches/operation/" + operationId);
     },
     getDeliveriesByOperation: function (operationId) {
 
     },
 
     getCommoditiesByOperation: function (planId) {  
-
-        return axios.get(catsV1BaseUri + "HRD/GetHRDByPlanId/" + planId)
-            
+        return axios.get(catsV1BaseUri + "HRD/GetHRDByPlanId/" + planId)           
        
+    },
+    addOperationRegion: function(operationRegion){
+        return axios.post(catsV2BaseUri + "operationRegion/",operationRegion);
     }
 }
