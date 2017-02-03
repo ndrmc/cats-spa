@@ -37,5 +37,8 @@ module.exports = {
     }, 
     getFdpById( id ) { 
         return axios.get( catsV1BaseUri + "FDP/Get/" + id )
+    },
+    getDispatchById(id){
+        return axios.get( catsV2BaseUri + "dispatches/" + id)
     }
 }

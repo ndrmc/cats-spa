@@ -42,13 +42,13 @@ router.get('/', function(req, res, next) {
 
     })
     .catch( function(error) { 
+      console.log(error);
       next( new Error(error)); 
-    })
-    ; 
-
-    
+    }); 
+        
   })
   .catch( function(error) { 
+    console.log(error);
     next( new Error(error)); 
   })
   ; 
@@ -80,6 +80,32 @@ router.get('/new', function(req, res, next) {
   ; 
 });
 
+router.get('/edit/:id', function(req, res, next) {
+  var id = req.params.id;
+  Promise.all([
+    lookupsService.getAllCommodityCategories(), 
+    lookupsService.getAllCommodities(), 
+    lookupsService.getAllProjects(),
+    lookupsService.getAllOperations(), 
+    lookupsService.getAllTransporters(),
+    lookupsService.getDispatchById(id)
+  ]).then( function( results ) { 
+    res.render( 'dispatch/edit', 
+    { 
+      commodityCategories: results[0].data, 
+      commodities: results[1].data, 
+      projects: results[2].data,
+      operations: results[3].data, 
+      transporters: results[4].data,
+      title: "Edit Dispatch",
+      dispatch: results[5].data
+   } );
+  })
+  .catch( function( error) { 
+    next(error.toString());
+  });
+  ; 
+});
 
 router.post( '/', function(req, res, next) {
 
@@ -95,7 +121,7 @@ router.post( '/', function(req, res, next) {
 
 router.put( '/', function(req, res, next) {
 
-  dispatchService.saveDispatch(req.body.id, req.body.saveDispatch)
+  dispatchService.updateDispatch(req.body.id, req.body.dispatch)
   .then( function(response) { 
     res.json({ id: response.data.id });
   })
